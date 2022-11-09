@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Hier sind die Daten für den Admin Userr
         User::factory()->create([
             'name' => 'Thomas Muster',
             'email' => 'thomas.muster@gmx.ch',
