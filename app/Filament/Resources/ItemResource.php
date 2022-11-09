@@ -13,6 +13,10 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -90,15 +94,23 @@ class ItemResource extends Resource
             ])
             ->defaultSort('updated_at', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label(''),
-                Tables\Actions\EditAction::make()
-                    ->label(''),
+               EditAction::make()
+                    ->label('')
+                    ->mutateRecordDataUsing(function (array $data): array {
+                        $data['vk_price'] = $data['vk_price']/100;
+                        $data['ek_price'] = $data['ek_price']/100;
+                        return $data;
+                    })
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['vk_price'] = $data['vk_price']*100;
+                        $data['ek_price'] = $data['ek_price']*100;
+                        return $data;
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                DeleteBulkAction::make(),
+                ForceDeleteBulkAction::make(),
+                RestoreBulkAction::make(),
             ]);
     }
 
@@ -112,10 +124,7 @@ class ItemResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListItems::route('/'),
-            'create' => Pages\CreateItem::route('/create'),
-            'view' => Pages\ViewItem::route('/{record}'),
-            'edit' => Pages\EditItem::route('/{record}/edit'),
+            'index' => Pages\ManageItems::route('/'),
         ];
     }
 
