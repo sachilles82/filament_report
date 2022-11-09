@@ -6,6 +6,9 @@ use App\Filament\Resources\ItemResource\Pages;
 use App\Filament\Resources\ItemResource\RelationManagers;
 use App\Models\Item;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -23,18 +26,23 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('description')
+                Textarea::make('desc')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('vk_price')
+                TextInput::make('ek_price')
+                    ->label('EK Preis in CHF')
+                    ->rule('numeric')
                     ->required(),
-                Forms\Components\TextInput::make('ek_price')
+                TextInput::make('vk_price')
+                    ->label('VK Preis in CHF')
+                    ->rule('numeric')
                     ->required(),
-                Forms\Components\TextInput::make('unit_id')
-                    ->required(),
+                Select::make('unit_id')
+                    ->relationship('unit', 'name')
+                    ->label('Einheit Auswahl'),
             ]);
     }
 
@@ -46,7 +54,7 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('vk_price'),
                 Tables\Columns\TextColumn::make('ek_price'),
-                Tables\Columns\TextColumn::make('unit_id'),
+                Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('created_at')

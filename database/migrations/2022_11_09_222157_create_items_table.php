@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('unit_id');
             $table->string('name');
             $table->string('description');
             $table->integer('vk_price');
             $table->integer('ek_price');
-            $table->foreignId('unit_id');
             $table->softDeletes();
             $table->timestamps();
         });
