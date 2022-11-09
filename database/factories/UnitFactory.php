@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Unit>
+ * @extends Factory<Unit>
  */
 class UnitFactory extends Factory
 {
@@ -17,7 +18,7 @@ class UnitFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
         ];
     }
 }
