@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Item;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -25,5 +26,6 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
         Unit::factory(5)->create();
+        Item::factory(10)->create();
     }
 }
