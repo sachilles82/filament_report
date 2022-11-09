@@ -17,14 +17,18 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Service';
+    protected static ?int $navigationSort = 1;
+    protected static ?string $modelLabel = 'Einheit';
+    protected static ?string $pluralModelLabel = 'Einheiten';
+    protected static ?string $navigationIcon = 'heroicon-o-puzzle';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Einheit')
+                    ->label('Bezeichnung')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -40,11 +44,14 @@ class UnitResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
+                Tables\Actions\DeleteAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label('Auswahl löschen'),
             ]);
     }
 
