@@ -13,7 +13,9 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemResource extends Resource
@@ -27,9 +29,11 @@ class ItemResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Service Name')
                     ->required()
                     ->maxLength(255),
-                Textarea::make('desc')
+                Textarea::make('description')
+                    ->label('Beschreibung')
                     ->required()
                     ->maxLength(255),
                 TextInput::make('ek_price')
@@ -50,21 +54,35 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('vk_price'),
-                Tables\Columns\TextColumn::make('ek_price'),
-                Tables\Columns\TextColumn::make('unit.name'),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                TextColumn::make('name')
+                    ->label('Service Name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('description')
+                    ->label('Beschreibung')
+                    ->visibleFrom('lg')
+                    ->limit(25)
+                    ->sortable()
+                    ->tooltip(fn (Model $record): string => "{$record->desc}")
+                    ->searchable(),
+                TextColumn::make('unit.name')
+                    ->visibleFrom('sm')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Einheit'),
+                TextColumn::make('ek_price')
+                    ->label('EK Preis')
+                    ->visibleFrom('lg')
+                    ->searchable()
+                    ->sortable()
+                    ->money('CHF'),
+                TextColumn::make('vk_price')
+                    ->label('VK Preis')
+                    ->searchable()
+                    ->sortable()
+                    ->money('CHF'),
             ])
-            ->filters([
-//                Tables\Filters\TrashedFilter::make(),
-            ])
+            ->defaultSort('updated_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
