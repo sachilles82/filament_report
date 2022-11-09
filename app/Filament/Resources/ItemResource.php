@@ -22,6 +22,12 @@ class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
+    protected static ?string $navigationGroup = 'Service';
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $modelLabel = 'Dienstleistung';
+    protected static ?string $pluralModelLabel = 'Dienstleistungen';
+
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     public static function form(Form $form): Form
@@ -84,8 +90,10 @@ class ItemResource extends Resource
             ])
             ->defaultSort('updated_at', 'desc')
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
