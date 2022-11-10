@@ -13,6 +13,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
@@ -94,7 +95,7 @@ class ItemResource extends Resource
             ])
             ->defaultSort('updated_at', 'desc')
             ->actions([
-               EditAction::make()
+                EditAction::make()
                     ->label('')
                     ->mutateRecordDataUsing(function (array $data): array {
                         $data['vk_price'] = $data['vk_price']/100;
@@ -106,6 +107,8 @@ class ItemResource extends Resource
                         $data['ek_price'] = $data['ek_price']*100;
                         return $data;
                     }),
+                DeleteAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),
