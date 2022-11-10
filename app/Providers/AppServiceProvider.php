@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Filament\Facades\Filament;
+use Illuminate\Foundation\Vite;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Filament::registerScripts([app(Vite::class)('resources/filament/filament-turbo.js')]);
+        Filament::registerScripts([app(Vite::class)('resources/filament/filament-stimulus.js')]);
     }
 }
